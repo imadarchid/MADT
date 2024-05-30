@@ -5,8 +5,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 
 interface ExchangeConsumer {
-    function sendRequest() external returns (bytes32);
-    function fulfillRequest() external returns (uint32);
+    function rate() external returns (uint256);
 }
 
 contract MADT is ERC20, AccessControl {
@@ -32,14 +31,13 @@ contract MADT is ERC20, AccessControl {
         bool success = usdtToken.transferFrom(msg.sender, address(this), _amount);
         require(success, "USDT transfer failed");
 
-        ExchangeConsumer(exchangeConsumer).sendRequest();
-        uint256 latestRate = ExchangeConsumer(exchangeConsumer).fulfillRequest();
+        uint256 latestRate = ExchangeConsumer(exchangeConsumer).rate();
         require(latestRate > 0, "Invalid price data");
 
         uint256 convertedAmount = _amount * latestRate;
 
-        // Mint the equivalent amount of MyToken to the user
         _mint(msg.sender, convertedAmount);
+
     }
 
     function withdrawUSDT(uint256 _amount) external onlyRole(DEFAULT_ADMIN_ROLE) {
