@@ -1,6 +1,5 @@
 exports.readResultAndError = require("./readResultAndError.js")
 exports.requestData = require("./request.js")
-exports.deployConsumer = require("./deployConsumer.js")
 exports.deployAutoConsumer = require("./deployAutoConsumer.js")
 exports.setDonId = require("./setDonId.js")
 exports.buildOffchainSecrets = require("./buildOffchainSecrets.js")
