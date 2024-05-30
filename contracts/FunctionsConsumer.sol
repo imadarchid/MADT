@@ -17,6 +17,8 @@ contract FunctionsConsumer is FunctionsClient, ConfirmedOwner {
   bytes public s_lastResponse;
   bytes public s_lastError;
 
+  uint256 public rate;
+
   constructor(address router, bytes32 _donId) FunctionsClient(router) ConfirmedOwner(msg.sender) {
     donId = _donId;
   }
@@ -71,5 +73,10 @@ contract FunctionsConsumer is FunctionsClient, ConfirmedOwner {
   function fulfillRequest(bytes32 requestId, bytes memory response, bytes memory err) internal override {
     s_lastResponse = response;
     s_lastError = err;
+
+    bool nilErr = (err.length == 0);
+    if (nilErr) {
+      rate = abi.decode(response, (uint256));
+    }
   }
 }
