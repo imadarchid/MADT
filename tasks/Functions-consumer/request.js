@@ -105,7 +105,6 @@ task("functions-request", "Initiates an on-demand request from a Functions consu
       gasPriceWei,
     })
 
-
     // Ensure that the subscription has a sufficient balance
     const estimatedCostLink = hre.ethers.utils.formatUnits(estimatedCostJuels, 18)
     const subBalanceLink = hre.ethers.utils.formatUnits(subInfo.balance, 18)
@@ -165,12 +164,11 @@ task("functions-request", "Initiates an on-demand request from a Functions consu
     }
 
     // Instantiate response listener
-   
+
     const responseListener = new ResponseListener({
       provider: hre.ethers.provider,
       functionsRouterAddress,
     })
-
 
     // Initiate the request
     const spinner = utils.spin()

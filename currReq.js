@@ -1,4 +1,4 @@
-if (secrets.bkamKey = "") {
+if ((secrets.bkamKey = "")) {
   throw Error("No valid BKAM_KEY was supplied")
 }
 
@@ -8,11 +8,11 @@ const bkamAPI = Functions.makeHttpRequest({
 })
 
 const exchRateAPI = Functions.makeHttpRequest({
-  url: `https://v6.exchangerate-api.com/v6/${secrets.EXCH_RATE_KEY}/pair/USD/MAD`
+  url: `https://v6.exchangerate-api.com/v6/${secrets.EXCH_RATE_KEY}/pair/USD/MAD`,
 })
 
 const currencyAPI = Functions.makeHttpRequest({
-  url: `https://api.currencyapi.com/v3/latest?apikey=${secrets.CURRENCY_KEY}&currencies=MAD`
+  url: `https://api.currencyapi.com/v3/latest?apikey=${secrets.CURRENCY_KEY}&currencies=MAD`,
 })
 
 const [bkamRequestResponse, exchRateAPIResponse, currencyAPIResponse] = await Promise.all([
