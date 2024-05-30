@@ -3,7 +3,7 @@ const { SubscriptionManager } = require("@chainlink/functions-toolkit")
 const { types } = require("hardhat/config")
 const { networks } = require("../../networks")
 
-task("functions-deploy-auto-consumer", "Deploys the AutomatedFunctionsConsumer contract")
+task("functions-deploy-auto-consumer", "Deploys the FunctionsConsumer contract")
   .addParam("subid", "Billing subscription ID used to pay for Functions requests")
   .addOptionalParam("verify", "Set to true to verify consumer contract", false, types.boolean)
   .addOptionalParam(
@@ -29,8 +29,8 @@ task("functions-deploy-auto-consumer", "Deploys the AutomatedFunctionsConsumer c
     const subManager = new SubscriptionManager({ signer, linkTokenAddress, functionsRouterAddress })
     await subManager.initialize()
 
-    console.log(`Deploying AutomatedFunctionsConsumer contract to ${network.name}`)
-    const autoConsumerContractFactory = await ethers.getContractFactory("AutomatedFunctionsConsumer")
+    console.log(`Deploying FunctionsConsumer contract to ${network.name}`)
+    const autoConsumerContractFactory = await ethers.getContractFactory("FunctionsConsumer")
     const autoConsumerContract = await autoConsumerContractFactory.deploy(functionsRouterAddress, donIdBytes32)
 
     console.log(`\nWaiting 1 block for transaction ${autoConsumerContract.deployTransaction.hash} to be confirmed...`)
@@ -71,5 +71,5 @@ task("functions-deploy-auto-consumer", "Deploys the AutomatedFunctionsConsumer c
       )
     }
 
-    console.log(`\nAutomatedFunctionsConsumer contract deployed to ${consumerAddress} on ${network.name}`)
+    console.log(`\nFunctionsConsumer contract deployed to ${consumerAddress} on ${network.name}`)
   })

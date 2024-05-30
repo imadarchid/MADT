@@ -5,19 +5,18 @@ task("balance", "Prints an account's balance")
   .addOptionalParam("token", "Balance for a specific token address")
   .addOptionalParam("ticker", "Token ticker")
   .setAction(async (taskArgs, hre) => {
-
-    const { ethers } = hre;
-    const provider = ethers.getDefaultProvider('http://localhost:8545/');
+    const { ethers } = hre
+    const provider = ethers.getDefaultProvider("http://localhost:8545/")
 
     let balance
 
     if (taskArgs.token) {
-      const tokenAddress = await ethers.getContractAt(taskArgs.ticker, taskArgs.token);
+      const tokenAddress = await ethers.getContractAt(taskArgs.ticker, taskArgs.token)
       balance = await tokenAddress.getBalance(taskArgs.account)
-      console.log(`${taskArgs.ticker} balance of ${taskArgs.account}: ${balance}`);
+      console.log(balance)
+      console.log(`${taskArgs.ticker} balance of ${taskArgs.account}: ${ethers.utils.formatUnits(balance, 6)}`)
     } else {
       balance = await provider.getBalance(taskArgs.account)
       console.log(ethers.utils.formatEther(balance), "ETH")
     }
-
   })
