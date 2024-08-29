@@ -1,8 +1,8 @@
 {
-  "name": "functions-hardhat-starter-kit",
+  "name": "madt-experiment",
   "license": "MIT",
   "version": "0.2.1",
-  "description": "Tooling for interacting with Chainlink Functions",
+  "description": "An experiment to build a MAD stablecoin based on the Chainlink tooklit",
   "scripts": {
     "prepare": "husky install",
     "compile": "hardhat compile",

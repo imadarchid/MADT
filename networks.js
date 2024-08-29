@@ -228,8 +228,8 @@ const networks = {
     accounts,
     confirmations: 1,
     nativeCurrencySymbol: "ETH",
-    linkToken: "0x8CEd3a48714Fc2B801F1aF51F753dbC66BA5EFbf",
-    functionsRouter: "0xECAb3fBd64d25D482E1E7Fde063DdAaA85f882c8",
+    linkToken: "0xc61DFe55D77ff1fCc46923517E6e8A7C55306215",
+    functionsRouter: "0xfDb02d666a4d28a5592b1Af225983a21275AeaF6",
     donId: "local-functions-testnet",
   },
 }
