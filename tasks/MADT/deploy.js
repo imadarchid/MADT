@@ -8,4 +8,6 @@ task("deploy-token", "Deploys the MADT contract")
     await madToken.deployed()
 
     console.log("MADT deployed to:", madToken.address)
+
+    return madToken.address
   })

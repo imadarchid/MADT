@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract USDT is ERC20 {
   constructor() ERC20("Tether", "USDT") {
-    _mint(msg.sender, 1000000000000000000000000); // Mint 1,000,000 USDT with 18 decimals
+    _mint(msg.sender, 100000000000000000000); // Mint 100 USDT with 18 decimals
   }
 
   function getBalance(address account) public view returns (uint256) {

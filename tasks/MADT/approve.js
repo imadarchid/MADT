@@ -7,8 +7,8 @@ task("approve-usdt", "Approves a spender to spend USDT tokens")
     const { tokenadd, spender, amount } = taskArgs
 
     const USDT = await ethers.getContractAt("USDT", tokenadd)
-    const approveTx = await USDT.approve(spender, amount)
+    const approveTx = await USDT.approve(spender, ethers.utils.parseUnits(amount))
     await approveTx.wait()
 
-    console.log(`Approved ${spender} to spend ${ethers.utils.formatUnits(amount, 6)} USDT tokens`)
+    console.log(`Approved ${spender} to spend ${amount} USDT tokens`)
   })

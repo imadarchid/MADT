@@ -49,13 +49,16 @@ module.exports = {
       avalanche: networks.avalanche.verifyApiKey,
       polygon: networks.polygon.verifyApiKey,
       sepolia: networks.ethereumSepolia.verifyApiKey,
-      polygonMumbai: networks.polygonMumbai.verifyApiKey,
       polygonAmoy: networks.polygonAmoy.verifyApiKey,
       avalancheFujiTestnet: networks.avalancheFuji.verifyApiKey,
       arbitrum: networks.arbitrum.verifyApiKey,
       arbitrumSepolia: networks.arbitrumSepolia.verifyApiKey,
       baseSepolia: networks.baseSepolia.verifyApiKey,
       optimismSepolia: networks.optimismSepolia.verifyApiKey,
+      base: networks.base.verifyApiKey,
+      optimism: networks.optimism.verifyApiKey,
+      celoAlfajores: networks.celoAlfajores.verifyApiKey,
+      celo: networks.celo.verifyApiKey,
     },
     customChains: [
       {
@@ -90,6 +93,38 @@ module.exports = {
           browserURL: "https://amoy.polygonscan.com",
         },
       },
+      {
+        network: "base",
+        chainId: 8453,
+        urls: {
+          apiURL: "https://api.basescan.org/api",
+          browserURL: "https://basescan.org",
+        },
+      },
+      {
+        network: "optimism",
+        chainId: 10,
+        urls: {
+          apiUrl: "https://api-optimistic.etherscan.io/api",
+          browserURL: "https://optimistic.etherscan.io/",
+        },
+      },
+      {
+        celoAlfajores: "celoAlfajores",
+        chainId: 44787,
+        urls: {
+          apiURL: "https://alfajores.celoscan.io/api",
+          browserURL: "https://alfajores.celoscan.io",
+        },
+      },
+      {
+        celoAlfajores: "celo",
+        chainId: 42220,
+        urls: {
+          apiURL: "https://celoscan.io/api",
+          browserURL: "https://celoscan.io",
+        },
+      },
     ],
   },
   gasReporter: {
@@ -100,7 +135,7 @@ module.exports = {
   },
   contractSizer: {
     runOnCompile: false,
-    only: ["FunctionsConsumer", "FunctionsBillingRegistry"],
+    only: ["FunctionsConsumer", "AutomatedFunctionsConsumer", "FunctionsBillingRegistry"],
   },
   paths: {
     sources: "./contracts",

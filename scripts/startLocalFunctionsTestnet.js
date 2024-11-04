@@ -14,7 +14,7 @@ require("@chainlink/env-enc").config("../.env.enc")
     {
       logging: {
         debug: false,
-        verbose: false,
+        verbose: true,
         quiet: true, // Set this to `false` to see logs from the local testnet
       },
     } // Ganache server options (optional)

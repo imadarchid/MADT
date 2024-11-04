@@ -72,4 +72,6 @@ task("functions-deploy-auto-consumer", "Deploys the FunctionsConsumer contract")
     }
 
     console.log(`\nFunctionsConsumer contract deployed to ${consumerAddress} on ${network.name}`)
+
+    return consumerAddress
   })

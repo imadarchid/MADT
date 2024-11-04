@@ -7,4 +7,6 @@ task("fund-usdt", "Deploys the USDT token contract").setAction(async (taskArgs, 
   await usdt.deployed()
 
   console.log("USDT deployed to:", usdt.address)
+
+  return usdt.address
 })

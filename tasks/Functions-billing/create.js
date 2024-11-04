@@ -53,4 +53,6 @@ task("functions-sub-create", "Creates a new billing subscription for Functions c
 
       console.log("\nSubscription Info: ", subInfo)
     }
+
+    return subscriptionId
   })
