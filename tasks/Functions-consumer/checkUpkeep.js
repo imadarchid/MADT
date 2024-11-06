@@ -10,7 +10,7 @@ task("functions-check-upkeep", "Checks if checkUpkeep returns true for an Automa
     console.log(
       `Checking if upkeep is required for Automation consumer contract ${taskArgs.contract} on network ${network.name}`
     )
-    const autoConsumerContractFactory = await ethers.getContractFactory("AutomatedFunctionsConsumer")
+    const autoConsumerContractFactory = await ethers.getContractFactory("FunctionsConsumer")
     const autoConsumerContract = await autoConsumerContractFactory.attach(taskArgs.contract)
 
     const checkUpkeep = await autoConsumerContract.checkUpkeep(checkData)

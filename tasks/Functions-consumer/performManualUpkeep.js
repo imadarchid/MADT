@@ -16,7 +16,7 @@ task("functions-perform-upkeep", "Manually call performUpkeep in an Automation c
     // Call performUpkeep
     const performData = taskArgs.data ?? []
 
-    const autoConsumerContractFactory = await ethers.getContractFactory("AutomatedFunctionsConsumer")
+    const autoConsumerContractFactory = await ethers.getContractFactory("FunctionsConsumer")
     const autoConsumerContract = await autoConsumerContractFactory.attach(taskArgs.contract)
 
     console.log(

@@ -4,7 +4,7 @@ const process = require("process")
 
 task(
   "functions-read",
-  "Reads the latest response (or error) returned to a FunctionsConsumer or AutomatedFunctionsConsumer consumer contract"
+  "Reads the latest response (or error) returned to a FunctionsConsumer or FunctionsConsumer consumer contract"
 )
   .addParam("contract", "Address of the consumer contract to read")
   .addOptionalParam(
