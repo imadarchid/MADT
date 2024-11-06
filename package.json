@@ -1,8 +1,8 @@
 {
-  "name": "functions-hardhat-starter-kit",
+  "name": "madt-chainlink-functions-starter",
   "license": "MIT",
   "version": "0.2.1",
-  "description": "Tooling for interacting with Chainlink Functions",
+  "description": "Using Chainlink Functions & Automation to build a MADT token",
   "scripts": {
     "prepare": "husky install",
     "compile": "hardhat compile",
