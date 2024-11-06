@@ -6,7 +6,7 @@ This is an educational project where we attempt to create a tokenized version of
 
 - ERC20.
 - Uncapped supply (Supply should match the amount in reserve minus fees).
-- Withdrawal fee of 0.05% to fund chain operations (Functions & Automation fees).
+- Mint fee of 5% to fund chain operations (Oracle & Automation fees).
 - Value of token is pegged to the value of MAD from custom price feeds.
 
 ## Use case
@@ -19,8 +19,8 @@ This project is for educational purposes only. A synthetic asset such as MADT co
 ## Roadmap
 
 - [ ] USD/MAD Aggregation Function
-- [ ] Reserve and Supply Mechanism
-- [ ] Token Contract
+- [x] Reserve and Supply Mechanism
+- [x] Token Contract
 
 ## Resources
 

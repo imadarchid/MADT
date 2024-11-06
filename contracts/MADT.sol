@@ -27,30 +27,37 @@ contract MADT is ERC20, AccessControl {
     uint256 allowance = usdtToken.allowance(msg.sender, address(this));
     require(allowance >= _amount, "Check the token allowance");
 
-    // Transfer USDT from the user to the contract
-    bool success = usdtToken.transferFrom(msg.sender, address(this), _amount);
-
-    require(success, "USDT transfer failed");
-
+    // Fetch the latest exchange rate from Oracle network
     bytes memory latestRateBytes = ExchangeConsumer(exchangeConsumer).s_lastResponse();
     uint256 latestRate = abi.decode(latestRateBytes, (uint256));
     require(latestRate > 0, "Invalid price data");
 
+    // Transfer USDT from the user to the contract
+    bool success = usdtToken.transferFrom(msg.sender, address(this), _amount);
+    require(success, "USDT transfer failed");
+
     uint256 convertedAmount = (_amount * latestRate) / 100;
+    convertedAmount = convertedAmount - (convertedAmount * 3) / 100; // 3% fee for oracle usage | TODO: Analyze oracle fee structure
 
     _mint(msg.sender, convertedAmount);
   }
 
-  function withdrawUSDT(uint256 _amount) external onlyRole(DEFAULT_ADMIN_ROLE) {
+  // Withdraw USDT by burning MADT tokens
+  function withdraw(uint256 _amount) external {
+    // Get user MADT balance
+    uint256 balance = this.balanceOf(msg.sender);
+
     // Fetch the latest exchange rate
     bytes memory latestRateBytes = ExchangeConsumer(exchangeConsumer).s_lastResponse();
     uint256 latestRate = abi.decode(latestRateBytes, (uint256));
     require(latestRate > 0, "Invalid price data");
 
-    // Calculate the equivalent amount of MADT to burn
+    require(balance >= _amount, "Insufficient contract balance");
+
+    // @TODO: What happens if the rate changes and not enough USDT is available in the reserve?
     uint256 withdrawableUSDT = (_amount * 100) / latestRate;
 
-    // Burn the equivalent amount of MADT from the admin's balance
+    // Burn the equivalent amount of MADT from the user's balance
     _burn(msg.sender, _amount);
 
     // Withdraw USDT from the contract

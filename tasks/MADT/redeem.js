@@ -7,7 +7,7 @@ task("redeem", "Reedem MADT token for USDT")
     const token = await MADT.attach(taskArgs.address)
 
     try {
-      await token.withdrawUSDT(ethers.utils.parseUnits(taskArgs.amount))
+      await token.withdraw(ethers.utils.parseUnits(taskArgs.amount))
       console.log(`Reedemed ${taskArgs.amount} MAD`)
       return taskArgs.amount
     } catch (error) {

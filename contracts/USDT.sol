@@ -3,6 +3,8 @@ pragma solidity 0.8.19;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
+// Simulated USDT token contract
+
 contract USDT is ERC20 {
   constructor() ERC20("Tether", "USDT") {
     _mint(msg.sender, 100000000000000000000); // Mint 100 USDT with 18 decimals

@@ -52,4 +52,4 @@
 // console.log(`Median MAD rate: $${medianRate.toFixed(2)}`)
 
 // return Functions.encodeUint256(Math.round(medianRate * 100))
-return Functions.encodeUint256(Math.round(9.85 * 100))
+return Functions.encodeUint256(Math.round(9.85 * 100)) // use for testing purposes

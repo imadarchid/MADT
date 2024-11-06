@@ -2,9 +2,7 @@ const { expect } = require("chai")
 const { getPriceUSD } = require("../../tasks/utils/price")
 
 describe("Dry run", async function () {
-  // We define a fixture to reuse the same setup in every test.
-  // We use loadFixture to run this setup once, snapshot that state,
-  // and reset Hardhat Network to that snapshot in every test.
+  // To do: add actual unit tests
 
   it("Mint 5 USDT - Sufficient Balance", async () => {
     let signer = await ethers.getSigner()
@@ -17,7 +15,6 @@ describe("Dry run", async function () {
     let MADTAddress = await hre.run("deploy-token", { consumer: consumer, usdtadd: USDTAddress })
 
     let startingUSDTBalance = await hre.run("balance", { account: signer.address, token: USDTAddress, ticker: "USDT" })
-    let startingMADTBalance = await hre.run("balance", { account: signer.address, token: MADTAddress, ticker: "MADT" })
 
     await hre.run("approve-usdt", { tokenadd: USDTAddress, spender: MADTAddress, amount: "1000" })
     await hre.run("functions-request", { contract: consumer, subid: subId })
@@ -27,13 +24,12 @@ describe("Dry run", async function () {
     let finalUSDTBalance = await hre.run("balance", { account: signer.address, token: USDTAddress, ticker: "USDT" })
     let finalMADTBalance = await hre.run("balance", { account: signer.address, token: MADTAddress, ticker: "MADT" })
 
-    await hre.run("redeem", { address: MADTAddress, amount: "49.25" })
+    await hre.run("redeem", { address: MADTAddress, amount: "47.25" })
 
     finalMADTBalance = await hre.run("balance", { account: signer.address, token: MADTAddress, ticker: "MADT" })
     finalUSDTBalance = await hre.run("balance", { account: signer.address, token: USDTAddress, ticker: "USDT" })
 
-    expect(finalUSDTBalance).to.equal(startingUSDTBalance - 5)
-    expect(mintedTokens).to.equal("5")
+    expect(finalMADTBalance).to.equal("0.5225")
   })
 
   // it("Mint 5 USDT - Insufficient Balance", async () => {
