@@ -1,66 +1,34 @@
-## Foundry
+# Synthetic Stablecoin Design - $MADT
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+For educational purposes only.
 
-Foundry consists of:
+## Overview
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+This project is a proof-of-concept for a synthetic stablecoin pegged to the value of the US Dollar. In this repository, we implement a vault contract that holds the collateral and a MADT contract that is minted to users in exchange for a dollar-pegged stablecoin. In this case, we are using the USDT stablecoin.
 
-## Documentation
+A previous version of this project is available in the [old](old) directory. I have migrated this codebase to use Foundry instead of Hardhat.
 
-https://book.getfoundry.sh/
+## Prerequisites
 
-## Usage
+- [Foundry](https://getfoundry.sh/)
 
-### Build
+## High-level Design
 
-```shell
-$ forge build
-```
+![Stablecoin Design](images/Stablecoin_Design.png)
 
-### Test
+## To-do
 
-```shell
-$ forge test
-```
+_Tehcnicals_
 
-### Format
+- [ ] Refactor the MADT & vault's contracts
+- [ ] Add mock consumers for the Chainlink Oracle
+- [ ] Establish fee structure for the vault
+- [ ] Add a script to deploy the contract and mint MADT to the owner
+- [ ] Add a script to burn MADT from the owner
+- [ ] Write tests for the contract
 
-```shell
-$ forge fmt
-```
+_Docs_
 
-### Gas Snapshots
-
-```shell
-$ forge snapshot
-```
-
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+- [ ] More details on the general architecture (especially the rebase mechanism).
+- [ ] More details on potential use cases.
+- [ ] Potential issues & mitigations.
