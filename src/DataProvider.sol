@@ -12,6 +12,7 @@ contract DataProvider is ConfirmedOwner, FunctionsClient {
     using FunctionsRequest for FunctionsRequest.Request;
 
     error UnexpectedRequestID(bytes32 requestId);
+
     event Response(bytes32 requestId, bytes response, bytes error);
 
     bytes32 public s_lastRequestId;
@@ -22,43 +23,32 @@ contract DataProvider is ConfirmedOwner, FunctionsClient {
     uint32 private constant GAS_LIMIT = 300000;
     address public immutable i_router;
 
-    constructor(
-        address _router,
-        bytes32 _donId,
-        string memory _aggregationLogic
-    ) FunctionsClient(_router) ConfirmedOwner(msg.sender) {
+    constructor(address _router, bytes32 _donId, string memory _aggregationLogic)
+        FunctionsClient(_router)
+        ConfirmedOwner(msg.sender)
+    {
         i_router = _router;
         i_donId = _donId;
         s_aggregationLogic = _aggregationLogic;
     }
 
-    function sendExchangeRateRequest(
-        uint64 subscriptionId,
-        string[] calldata args
-    ) external onlyOwner returns (bytes32 requestId) {
+    function sendExchangeRateRequest(uint64 subscriptionId, string[] calldata args)
+        external
+        onlyOwner
+        returns (bytes32 requestId)
+    {
         FunctionsRequest.Request memory req;
         req.initializeRequest(
-            FunctionsRequest.Location.Inline,
-            FunctionsRequest.CodeLanguage.JavaScript,
-            s_aggregationLogic
+            FunctionsRequest.Location.Inline, FunctionsRequest.CodeLanguage.JavaScript, s_aggregationLogic
         );
         req.setArgs(args);
 
-        s_lastRequestId = _sendRequest(
-            req.encodeCBOR(),
-            subscriptionId,
-            GAS_LIMIT,
-            i_donId
-        );
+        s_lastRequestId = _sendRequest(req.encodeCBOR(), subscriptionId, GAS_LIMIT, i_donId);
 
         return s_lastRequestId;
     }
 
-    function _fulfillRequest(
-        bytes32 requestId,
-        bytes memory response,
-        bytes memory err
-    ) internal override {
+    function _fulfillRequest(bytes32 requestId, bytes memory response, bytes memory err) internal override {
         if (s_lastRequestId != requestId) {
             revert UnexpectedRequestID(requestId);
         }

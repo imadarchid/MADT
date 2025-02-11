@@ -57,11 +57,13 @@ contract Vault {
         uint256 madValue = dataProvider.getMADValueInUSD();
         uint256 usdAmount = amount * madValue;
 
-        if (madt.balanceOf(msg.sender) < amount)
+        if (madt.balanceOf(msg.sender) < amount) {
             revert Vault__UserInsufficientBalance();
+        }
 
-        if (usdt.balanceOf(address(this)) < usdAmount)
+        if (usdt.balanceOf(address(this)) < usdAmount) {
             revert Vault__VaultInsufficientBalance();
+        }
 
         madt.burn(msg.sender, amount);
 

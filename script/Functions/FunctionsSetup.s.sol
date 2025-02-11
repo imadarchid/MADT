@@ -6,7 +6,10 @@ import {MockV3Aggregator} from "@chainlink/contracts/v0.8/tests/MockV3Aggregator
 import {FunctionsRouter} from "@chainlink/contracts/v0.8/functions/v1_0_0/FunctionsRouter.sol";
 import {FunctionsCoordinator} from "@chainlink/contracts/v0.8/functions/v1_3_0/FunctionsCoordinator.sol";
 import {FunctionsBillingConfig} from "@chainlink/contracts/v0.8/functions/v1_3_0/FunctionsBilling.sol";
-import {TermsOfServiceAllowList, TermsOfServiceAllowListConfig} from "@chainlink/contracts/v0.8/functions/v1_3_0/accessControl/TermsOfServiceAllowList.sol";
+import {
+    TermsOfServiceAllowList,
+    TermsOfServiceAllowListConfig
+} from "@chainlink/contracts/v0.8/functions/v1_3_0/accessControl/TermsOfServiceAllowList.sol";
 
 import {Script} from "forge-std/Script.sol";
 
@@ -17,12 +20,7 @@ contract FunctionsConstants {
 contract FunctionsSetup is Script, FunctionsConstants {
     function deployChainlinkContracts()
         public
-        returns (
-            string memory donId,
-            MockLinkToken linkToken,
-            FunctionsRouter router,
-            FunctionsCoordinator coordinator
-        )
+        returns (string memory donId, MockLinkToken linkToken, FunctionsRouter router, FunctionsCoordinator coordinator)
     {
         vm.startBroadcast();
         linkToken = new MockLinkToken();
@@ -30,23 +28,14 @@ contract FunctionsSetup is Script, FunctionsConstants {
         MockV3Aggregator linkEthPriceFeed = new MockV3Aggregator(18, 2000e8);
         MockV3Aggregator linkUsdPriceFeed = new MockV3Aggregator(18, 1e8);
 
-        router = new FunctionsRouter(
-            address(linkToken),
-            _getFunctionsRouterConfig()
-        );
+        router = new FunctionsRouter(address(linkToken), _getFunctionsRouterConfig());
 
         coordinator = new FunctionsCoordinator(
-            address(router),
-            _getFunctionsCoordinatorConfig(),
-            address(linkEthPriceFeed),
-            address(linkUsdPriceFeed)
+            address(router), _getFunctionsCoordinatorConfig(), address(linkEthPriceFeed), address(linkUsdPriceFeed)
         );
 
-        TermsOfServiceAllowList termsOfServiceAllowList = new TermsOfServiceAllowList(
-                _getTermsOfServiceAllowListConfig(),
-                new address[](0),
-                new address[](0)
-            );
+        TermsOfServiceAllowList termsOfServiceAllowList =
+            new TermsOfServiceAllowList(_getTermsOfServiceAllowListConfig(), new address[](0), new address[](0));
 
         bytes32 allowListId = router.getAllowListId();
         bytes32[] memory ids = new bytes32[](2);
@@ -75,59 +64,41 @@ contract FunctionsSetup is Script, FunctionsConstants {
         return (DON_ID, linkToken, router, coordinator);
     }
 
-    function _getFunctionsRouterConfig()
-        internal
-        pure
-        returns (FunctionsRouter.Config memory config)
-    {
+    function _getFunctionsRouterConfig() internal pure returns (FunctionsRouter.Config memory config) {
         uint32[] memory maxCallbackGasLimits = new uint32[](3);
         maxCallbackGasLimits[0] = 300_000;
         maxCallbackGasLimits[1] = 500_000;
         maxCallbackGasLimits[2] = 1_000_000;
 
-        return
-            FunctionsRouter.Config({
-                maxConsumersPerSubscription: 100,
-                adminFee: 0,
-                handleOracleFulfillmentSelector: 0x0ca76175,
-                gasForCallExactCheck: 5000,
-                maxCallbackGasLimits: maxCallbackGasLimits,
-                subscriptionDepositMinimumRequests: 0,
-                subscriptionDepositJuels: 0
-            });
+        return FunctionsRouter.Config({
+            maxConsumersPerSubscription: 100,
+            adminFee: 0,
+            handleOracleFulfillmentSelector: 0x0ca76175,
+            gasForCallExactCheck: 5000,
+            maxCallbackGasLimits: maxCallbackGasLimits,
+            subscriptionDepositMinimumRequests: 0,
+            subscriptionDepositJuels: 0
+        });
     }
 
-    function _getFunctionsCoordinatorConfig()
-        internal
-        pure
-        returns (FunctionsBillingConfig memory config)
-    {
-        return
-            FunctionsBillingConfig({
-                fulfillmentGasPriceOverEstimationBP: 0,
-                feedStalenessSeconds: 86_400,
-                gasOverheadBeforeCallback: 44_615,
-                gasOverheadAfterCallback: 44_615,
-                minimumEstimateGasPriceWei: 1000000000,
-                maxSupportedRequestDataVersion: 1,
-                fallbackUsdPerUnitLink: 1e18,
-                fallbackUsdPerUnitLinkDecimals: 8,
-                fallbackNativePerUnitLink: 1400000000,
-                requestTimeoutSeconds: 0,
-                donFeeCentsUsd: 100,
-                operationFeeCentsUsd: 0
-            });
+    function _getFunctionsCoordinatorConfig() internal pure returns (FunctionsBillingConfig memory config) {
+        return FunctionsBillingConfig({
+            fulfillmentGasPriceOverEstimationBP: 0,
+            feedStalenessSeconds: 86_400,
+            gasOverheadBeforeCallback: 44_615,
+            gasOverheadAfterCallback: 44_615,
+            minimumEstimateGasPriceWei: 1000000000,
+            maxSupportedRequestDataVersion: 1,
+            fallbackUsdPerUnitLink: 1e18,
+            fallbackUsdPerUnitLinkDecimals: 8,
+            fallbackNativePerUnitLink: 1400000000,
+            requestTimeoutSeconds: 0,
+            donFeeCentsUsd: 100,
+            operationFeeCentsUsd: 0
+        });
     }
 
-    function _getTermsOfServiceAllowListConfig()
-        internal
-        pure
-        returns (TermsOfServiceAllowListConfig memory config)
-    {
-        return
-            TermsOfServiceAllowListConfig({
-                enabled: false,
-                signerPublicKey: address(0)
-            });
+    function _getTermsOfServiceAllowListConfig() internal pure returns (TermsOfServiceAllowListConfig memory config) {
+        return TermsOfServiceAllowListConfig({enabled: false, signerPublicKey: address(0)});
     }
 }

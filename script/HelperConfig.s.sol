@@ -33,11 +33,7 @@ contract HelperConfig is Script {
         }
     }
 
-    function getSepoliaEthConfig()
-        public
-        pure
-        returns (NetworkConfig memory sepoliaConfig)
-    {
+    function getSepoliaEthConfig() public pure returns (NetworkConfig memory sepoliaConfig) {
         sepoliaConfig = NetworkConfig({
             linkToken: 0x779877A7B0D9E8603169DdbD7836e478b4624789,
             usdToken: 0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419,
@@ -49,16 +45,9 @@ contract HelperConfig is Script {
         return sepoliaConfig;
     }
 
-    function getAnvilEthConfig()
-        public
-        returns (NetworkConfig memory anvilConfig)
-    {
-        (
-            string memory donId,
-            MockLinkToken linkToken,
-            FunctionsRouter router,
-            FunctionsCoordinator coordinator
-        ) = new FunctionsSetup().deployChainlinkContracts();
+    function getAnvilEthConfig() public returns (NetworkConfig memory anvilConfig) {
+        (string memory donId, MockLinkToken linkToken, FunctionsRouter router, FunctionsCoordinator coordinator) =
+            new FunctionsSetup().deployChainlinkContracts();
 
         console.log("donId", donId);
         console.log("linkToken", address(linkToken));
