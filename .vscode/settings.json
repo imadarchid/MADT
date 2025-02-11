@@ -1,0 +1,8 @@
+{
+  "editor.formatOnSave": true,
+  "solidity.formatter": "prettier",
+  "solidity.defaultCompiler": "localFile",
+  "solidity.packageDefaultDependenciesContractsDirectory": "src",
+  "solidity.packageDefaultDependenciesDirectory": "lib",
+  "git.ignoreLimitWarning": true
+}
