@@ -20,25 +20,16 @@ contract VaultTest is Test {
 
     function setUp() public {
         helperConfig = new HelperConfig();
-        HelperConfig.NetworkConfig memory networkConfig = helperConfig
-            .getNetworkConfig();
+        HelperConfig.NetworkConfig memory networkConfig = helperConfig.getNetworkConfig();
         vm.startBroadcast();
-        DataProvider dataProvider = new DataProvider(
-            networkConfig.router,
-            networkConfig.donId,
-            "return 1;"
-        );
+        DataProvider dataProvider = new DataProvider(networkConfig.router, networkConfig.donId, "return 1;");
         // dataProvider.sendExchangeRateRequest(
         //     networkConfig.subscriptionId,
         //     networkConfig.args
         // );
 
         madt = new MADT();
-        vault = new Vault(
-            IDataProvider(address(dataProvider)),
-            madt,
-            IERC20(networkConfig.usdToken)
-        );
+        vault = new Vault(IDataProvider(address(dataProvider)), madt, IERC20(networkConfig.usdToken));
         vm.stopBroadcast();
     }
 
