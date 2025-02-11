@@ -3,7 +3,7 @@ pragma solidity ^0.8.24;
 
 import {Script} from "forge-std/Script.sol";
 import {console} from "forge-std/console.sol";
-import {FunctionsSetup} from "./FunctionsSetup/FunctionsSetup.s.sol";
+import {FunctionsSetup} from "./Functions/FunctionsSetup.s.sol";
 import {MockLinkToken} from "@chainlink/contracts/v0.8/mocks/MockLinkToken.sol";
 import {FunctionsRouter} from "@chainlink/contracts/v0.8/functions/v1_0_0/FunctionsRouter.sol";
 import {FunctionsCoordinator} from "@chainlink/contracts/v0.8/functions/v1_3_0/FunctionsCoordinator.sol";
