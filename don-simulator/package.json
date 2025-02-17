@@ -1,0 +1,9 @@
+{
+  "devDependencies": {
+    "@types/node": "^22.13.4"
+  },
+  "dependencies": {
+    "cbor": "^10.0.3",
+    "ethers": "^5.7.2"
+  }
+}

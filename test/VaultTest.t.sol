@@ -3,34 +3,28 @@ pragma solidity ^0.8.24;
 
 import {Test} from "forge-std/Test.sol";
 import {console} from "forge-std/console.sol";
+import {StdCheats} from "forge-std/StdCheats.sol";
 
-import {Vault} from "../src/Vault.sol";
-import {HelperConfig} from "../script/HelperConfig.s.sol";
-import {DataProvider} from "../src/DataProvider.sol";
-import {MADT} from "../src/MADT.sol";
-import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import {FunctionsAuto} from "../script/FunctionsAuto.s.sol";
 import {IDataProvider} from "../src/interfaces/IDataProvider.sol";
+import {HelperConfig} from "../script/HelperConfig.s.sol";
 
-contract VaultTest is Test {
-    Vault vault;
-    MADT madt;
-    HelperConfig helperConfig;
+contract VaultTest is Test, HelperConfig {
+    FunctionsAuto functionsAuto;
+    address public consumer;
+    uint64 public subscriptionId;
+    IDataProvider public dataProvider;
 
-    address user = makeAddr("user");
+    address public deployer = makeAddr("deployer");
+    string public MAINNET_RPC_URL = vm.envString("RPC_URL");
 
     function setUp() public {
-        helperConfig = new HelperConfig();
-        HelperConfig.NetworkConfig memory networkConfig = helperConfig.getNetworkConfig();
-        vm.startBroadcast();
-        DataProvider dataProvider = new DataProvider(networkConfig.router, networkConfig.donId, "return 1;");
-        // dataProvider.sendExchangeRateRequest(
-        //     networkConfig.subscriptionId,
-        //     networkConfig.args
-        // );
+        functionsAuto = new FunctionsAuto();
+        functionsAuto.run();
+        consumer = functionsAuto.getConsumer();
+        subscriptionId = functionsAuto.getSubscriptionId();
 
-        madt = new MADT();
-        vault = new Vault(IDataProvider(address(dataProvider)), madt, IERC20(networkConfig.usdToken));
-        vm.stopBroadcast();
+        dataProvider = IDataProvider(consumer);
     }
 
     /*
@@ -41,9 +35,23 @@ contract VaultTest is Test {
      *   - Test the case in which the USD/MAD conversion drops between the time of deposit and redemption
      */
 
-    function testDepositUSDTforMADT() public {
-        vm.startPrank(user);
+    function testSendConsumerRequest() public {
+        vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
+        bytes32 requestId = dataProvider.sendRequest(subscriptionId);
+        console.logBytes32(requestId);
+        bytes memory response = dataProvider.getLastResponse();
+        console.logBytes(response);
+        vm.stopBroadcast();
+    }
 
-        vm.stopPrank();
+    function testIfConsumerRequestIsReceived() public {
+        vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
+        bytes32 requestId = dataProvider.sendRequest(subscriptionId);
+        vm.stopBroadcast();
+
+        vm.selectFork(0);
+
+        bytes memory response = dataProvider.getLastResponse();
+        console.logBytes(response);
     }
 }
