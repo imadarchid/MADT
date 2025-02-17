@@ -14,10 +14,7 @@ contract Interactions is Script, HelperConfig {
 
     function run() public {
         vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
-        address contractAddress = DevOpsTools.get_most_recent_deployment(
-            "DataProvider",
-            block.chainid
-        );
+        address contractAddress = DevOpsTools.get_most_recent_deployment("DataProvider", block.chainid);
         dataProvider = IDataProvider(contractAddress);
         console.log(bytesToUint(dataProvider.getLastResponse()));
         // sendRequest();

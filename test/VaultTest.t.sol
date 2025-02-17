@@ -21,10 +21,7 @@ contract VaultTest is Test, HelperConfig {
     string public MAINNET_RPC_URL = vm.envString("RPC_URL");
 
     function setUp() public {
-        address contractAddress = DevOpsTools.get_most_recent_deployment(
-            "DataProvider",
-            block.chainid
-        );
+        address contractAddress = DevOpsTools.get_most_recent_deployment("DataProvider", block.chainid);
 
         dataProvider = IDataProvider(contractAddress);
     }
