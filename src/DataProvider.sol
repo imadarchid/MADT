@@ -16,7 +16,7 @@ contract DataProvider is ConfirmedOwner, FunctionsClient {
     bytes32 public s_lastRequestId;
     bytes public s_lastResponse;
     bytes public s_lastError;
-    string public s_aggregationLogic = "return Functions.encodeUint256(12500);";
+    string public s_sourceCode = "return Functions.encodeUint256(12500);";
     bytes32 private immutable i_donId;
     uint32 private constant GAS_LIMIT = 300000;
 
@@ -34,7 +34,7 @@ contract DataProvider is ConfirmedOwner, FunctionsClient {
         req.initializeRequest(
             FunctionsRequest.Location.Inline,
             FunctionsRequest.CodeLanguage.JavaScript,
-            s_aggregationLogic
+            s_sourceCode
         );
 
         s_lastRequestId = _sendRequest(
@@ -77,5 +77,13 @@ contract DataProvider is ConfirmedOwner, FunctionsClient {
 
     function getLastRequestId() public view returns (bytes32) {
         return s_lastRequestId;
+    }
+
+    function setSourceCode(string memory sourceCode) external onlyOwner {
+        s_sourceCode = sourceCode;
+    }
+
+    function getSourceCode() public view returns (string memory) {
+        return s_sourceCode;
     }
 }

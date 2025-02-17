@@ -7,6 +7,7 @@ interface IDataProvider {
         uint64 subscriptionId
     ) external returns (bytes32 requestId);
 
+    function getSourceCode() external view returns (string memory);
     function getMADValueInUSD() external returns (uint256);
     function getLastResponse() external view returns (bytes memory);
     function getLastError() external view returns (bytes memory);

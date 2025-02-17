@@ -19,8 +19,9 @@ contract Interactions is Script, HelperConfig {
             block.chainid
         );
         dataProvider = IDataProvider(contractAddress);
+        console.log(bytesToUint(dataProvider.getLastResponse()));
         // sendRequest();
-        console.log(bytesToUint(getLastResponse()));
+        // console.log(getSourceCode());
         vm.stopBroadcast();
     }
 
@@ -30,5 +31,9 @@ contract Interactions is Script, HelperConfig {
 
     function sendRequest() public {
         dataProvider.sendRequest(1);
+    }
+
+    function getSourceCode() public view returns (string memory) {
+        return dataProvider.getSourceCode();
     }
 }
