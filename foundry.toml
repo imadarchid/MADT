@@ -1,4 +1,11 @@
 [profile.default]
+fs_permissions = [
+    { access = "read", path = "./out" },
+    { access = "read", path = "lib/foundry-chainlink-toolkit/out" },
+    { access = "read", path = "./broadcast" },
+    { access = "read", path = "./reports" },
+]
+
 src = "src"
 out = "out"
 libs = ["lib"]
@@ -6,6 +13,10 @@ libs = ["lib"]
 remappings = [
     "openzeppelin-contracts/=lib/openzeppelin-contracts/",
     "@chainlink/contracts/=lib/chainlink-brownie-contracts/contracts/src/",
+    "@solmate/=lib/solmate/",
+    "foundry-chainlink-toolkit/=lib/foundry-chainlink-toolkit/",
 ]
+unchecked_cheatcode_artifacts = true
+via_ir = true
 
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
