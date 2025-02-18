@@ -4,7 +4,7 @@ pragma solidity ^0.8.24;
 
 interface IDataProvider {
     function sendRequest(uint64 subscriptionId) external returns (bytes32 requestId);
-
+    function setSourceCode(string memory sourceCode) external;
     function getSourceCode() external view returns (string memory);
     function getMADValueInUSD() external returns (uint256);
     function getLastResponse() external view returns (bytes memory);

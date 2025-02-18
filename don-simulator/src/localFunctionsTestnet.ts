@@ -324,7 +324,6 @@ const buildRequestObject = async (
   for (let i = 0; i < decodedRequestData.length - 1; i += 2) {
     const requestDataKey = decodedRequestData[i];
     const requestDataValue = decodedRequestData[i + 1];
-    console.log(requestDataKey, requestDataValue);
     switch (requestDataKey) {
       case "codeLocation":
         requestDataObject.codeLocation = requestDataValue;

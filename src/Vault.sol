@@ -11,6 +11,7 @@ contract Vault {
     error Vault__TransferFailed();
     error Vault__UserInsufficientBalance();
     error Vault__VaultInsufficientBalance();
+    error Vault__ApproveFailed();
 
     event CollateralDeposited(address destination, uint256 amount);
     event CollateralRedeemed(address destination, uint256 amount);
@@ -33,14 +34,14 @@ contract Vault {
         @return bool True if the collateral was deposited successfully
     */
 
-    function depositCollateral(uint256 amount) public payable returns (bool) {
+    function depositCollateral(uint256 amountInUsd) public payable returns (bool) {
         uint256 madValue = dataProvider.getMADValueInUSD();
-        uint256 madAmount = (amount * 1e18) / madValue;
+        uint256 madAmount = (amountInUsd * 1e18) / madValue;
 
-        bool success = usdt.transferFrom(msg.sender, address(this), amount);
+        bool success = usdt.transferFrom(msg.sender, address(this), amountInUsd * (10 ** 6));
         if (!success) revert Vault__TransferFailed();
 
-        emit CollateralDeposited(msg.sender, amount);
+        emit CollateralDeposited(msg.sender, amountInUsd * (10 ** 6));
         madt.mint(msg.sender, madAmount);
         emit MADTMinted(msg.sender, madAmount);
         return success;
@@ -53,24 +54,24 @@ contract Vault {
         @return bool True if the collateral was redeemed successfully
     */
 
-    function redeemCollateral(uint256 amount) public payable returns (bool) {
+    function redeemCollateral(uint256 amountInUsd) public payable returns (bool) {
         uint256 madValue = dataProvider.getMADValueInUSD();
-        uint256 usdAmount = amount * madValue;
+        uint256 madAmount = (amountInUsd * 1e18) / madValue;
 
-        if (madt.balanceOf(msg.sender) < amount) {
+        if (madt.balanceOf(msg.sender) < madAmount) {
             revert Vault__UserInsufficientBalance();
         }
 
-        if (usdt.balanceOf(address(this)) < usdAmount) {
+        if (usdt.balanceOf(address(this)) < amountInUsd * 1e6) {
             revert Vault__VaultInsufficientBalance();
         }
 
-        madt.burn(msg.sender, amount);
+        madt.burn(msg.sender, madAmount);
 
-        bool success = usdt.transfer(msg.sender, usdAmount);
+        bool success = usdt.transfer(msg.sender, amountInUsd * 1e6);
         if (!success) revert Vault__TransferFailed();
 
-        emit CollateralRedeemed(msg.sender, amount);
+        emit CollateralRedeemed(msg.sender, amountInUsd);
         return success;
     }
 }

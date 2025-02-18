@@ -16,9 +16,9 @@ contract Interactions is Script, HelperConfig {
         vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
         address contractAddress = DevOpsTools.get_most_recent_deployment("DataProvider", block.chainid);
         dataProvider = IDataProvider(contractAddress);
-        console.log(bytesToUint(dataProvider.getLastResponse()));
         // sendRequest();
-        // console.log(getSourceCode());
+        console.log(bytesToUint(dataProvider.getLastResponse()));
+        // console.log(dataProvider.getSourceCode());
         vm.stopBroadcast();
     }
 
@@ -27,7 +27,7 @@ contract Interactions is Script, HelperConfig {
     }
 
     function sendRequest() public {
-        dataProvider.sendRequest(1);
+        dataProvider.sendRequest(2);
     }
 
     function getSourceCode() public view returns (string memory) {

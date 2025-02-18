@@ -28,6 +28,7 @@ contract FunctionsScript is Script, HelperConfig {
         consumer = deployConsumer();
         subscriptionId = createSubscription();
         console.log("Subscription ID: %s", subscriptionId);
+        console.log("Consumer: %s", consumer);
 
         addConsumerToSubscription(subscriptionId, consumer);
         fundSubscription(subscriptionId, DEFAULT_SUB_TOPUP);
@@ -61,10 +62,5 @@ contract FunctionsScript is Script, HelperConfig {
 
     function getSubscriptionId() public view returns (uint64) {
         return subscriptionId;
-    }
-
-    function sendRequest() public {
-        DataProvider dataProvider = DataProvider(consumer);
-        dataProvider.sendRequest(subscriptionId);
     }
 }
