@@ -31,6 +31,7 @@ import type {
   FunctionsContracts,
   RequestEventData,
 } from "./types";
+import path from "path";
 
 export const startLocalFunctionsTestnet = async (
   coordinatorAddress?: string,
@@ -494,8 +495,12 @@ if (require.main === module) {
     try {
       const args = process.argv.slice(2);
       const coordinatorAddress = args[0];
+      const configPath = path.join(process.cwd(), "don-simulator/src/config.js");
       console.log("Starting local Functions testnet...");
-      const testnet = await startLocalFunctionsTestnet(coordinatorAddress);
+      const testnet = await startLocalFunctionsTestnet(
+        coordinatorAddress,
+        configPath
+      );
       console.log("Local Functions testnet started successfully");
 
       // Keep the process running
