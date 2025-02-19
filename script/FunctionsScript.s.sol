@@ -27,6 +27,12 @@ contract FunctionsScript is Script, HelperConfig {
         vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
         consumer = deployConsumer();
         subscriptionId = createSubscription();
+        string memory jsonString = string(
+            abi.encodePacked(
+                '{"consumer":"', vm.toString(consumer), '","subscriptionId":', vm.toString(subscriptionId), "}"
+            )
+        );
+        vm.writeFile("don-reports/donDetails.json", jsonString);
         console.log("Subscription ID: %s", subscriptionId);
         console.log("Consumer: %s", consumer);
 

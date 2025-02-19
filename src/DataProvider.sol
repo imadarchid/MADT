@@ -16,24 +16,42 @@ contract DataProvider is ConfirmedOwner, FunctionsClient {
     bytes32 public s_lastRequestId;
     bytes public s_lastResponse;
     bytes public s_lastError;
-    string public s_sourceCode = "return Functions.encodeUint256(12500);";
     bytes32 private immutable i_donId;
     uint32 private constant GAS_LIMIT = 300000;
 
-    constructor(address _router, bytes32 _donId) FunctionsClient(_router) ConfirmedOwner(msg.sender) {
+    constructor(
+        address _router,
+        bytes32 _donId
+    ) FunctionsClient(_router) ConfirmedOwner(msg.sender) {
         i_donId = _donId;
     }
 
-    function sendRequest(uint64 subscriptionId) external onlyOwner returns (bytes32 requestId) {
+    function sendRequest(
+        uint64 subscriptionId,
+        string memory sourceCode
+    ) external onlyOwner returns (bytes32 requestId) {
         FunctionsRequest.Request memory req;
-        req.initializeRequest(FunctionsRequest.Location.Inline, FunctionsRequest.CodeLanguage.JavaScript, s_sourceCode);
+        req.initializeRequest(
+            FunctionsRequest.Location.Inline,
+            FunctionsRequest.CodeLanguage.JavaScript,
+            sourceCode
+        );
 
-        s_lastRequestId = _sendRequest(req.encodeCBOR(), subscriptionId, GAS_LIMIT, i_donId);
+        s_lastRequestId = _sendRequest(
+            req.encodeCBOR(),
+            subscriptionId,
+            GAS_LIMIT,
+            i_donId
+        );
 
         return s_lastRequestId;
     }
 
-    function fulfillRequest(bytes32 requestId, bytes memory response, bytes memory err) internal override {
+    function fulfillRequest(
+        bytes32 requestId,
+        bytes memory response,
+        bytes memory err
+    ) internal override {
         if (s_lastRequestId != requestId) {
             revert UnexpectedRequestID(requestId);
         }
@@ -49,8 +67,8 @@ contract DataProvider is ConfirmedOwner, FunctionsClient {
         return madValue;
     }
 
-    function getLastResponse() public view returns (bytes memory) {
-        return s_lastResponse;
+    function getLastResponse() public view returns (uint256) {
+        return abi.decode(s_lastResponse, (uint256));
     }
 
     function getLastError() public view returns (bytes memory) {
@@ -61,11 +79,4 @@ contract DataProvider is ConfirmedOwner, FunctionsClient {
         return s_lastRequestId;
     }
 
-    function setSourceCode(string memory sourceCode) external onlyOwner {
-        s_sourceCode = sourceCode;
-    }
-
-    function getSourceCode() public view returns (string memory) {
-        return s_sourceCode;
-    }
 }

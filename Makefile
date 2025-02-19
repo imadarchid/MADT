@@ -33,6 +33,18 @@ simulate-don:
 	printf "%s\n" "Launching local don simulator..." && \
 	npx tsx ./don-simulator/src/localFunctionsTestnet.ts
 
+setup-functions:
+	forge script script/FunctionsScript.s.sol:FunctionsScript --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast
+
+send-request:
+	forge script script/Interactions.s.sol:Interactions --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast
+
+get-last-response:
+	cast call $(CONTRACT_ADDRESS) "getLastResponse()" --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY)
+
+change-source:
+	npx tsx ./don-simulator/src/setSource.ts $(CONTRACT_ADDRESS)
+
 NETWORK_ARGS := --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast
 
 ifeq ($(findstring --network sepolia,$(ARGS)),--network sepolia)

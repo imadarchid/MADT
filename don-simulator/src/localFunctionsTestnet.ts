@@ -451,10 +451,15 @@ export const deployFunctionsOracle = async (
   console.log("Link token deployed at:", linkToken.address);
   console.log("Don ID:", simulatedDonId);
 
-  fs.appendFileSync(
-    ".env",
-    `MOCK_COORDINATOR_ADDRESS=${mockCoordinator.address}\nFUNCTIONS_ROUTER_ADDRESS=${router.address}\nLINK_TOKEN_ADDRESS=${linkToken.address}\nDON_ID=${simulatedDonId}\n`
-  );
+  const envFile = fs.readFileSync('.env', 'utf8');
+  const newEnv = envFile
+    .split('\n')
+    .filter(line => !line.startsWith('MOCK_COORDINATOR_ADDRESS='))
+    .filter(line => !line.startsWith('FUNCTIONS_ROUTER_ADDRESS='))
+    .filter(line => !line.startsWith('LINK_TOKEN_ADDRESS='))
+    .filter(line => !line.startsWith('DON_ID='))
+    .join('\n');
+  fs.writeFileSync('.env', newEnv + `\nMOCK_COORDINATOR_ADDRESS=${mockCoordinator.address}\nFUNCTIONS_ROUTER_ADDRESS=${router.address}\nLINK_TOKEN_ADDRESS=${linkToken.address}\nDON_ID=${simulatedDonId}\n`);
 
   return {
     donId: simulatedDonId,

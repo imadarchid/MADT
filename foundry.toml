@@ -4,6 +4,7 @@ fs_permissions = [
     { access = "read", path = "lib/foundry-chainlink-toolkit/out" },
     { access = "read", path = "./broadcast" },
     { access = "read", path = "./reports" },
+    { access = "read-write", path = "don-reports" },
 ]
 
 src = "src"

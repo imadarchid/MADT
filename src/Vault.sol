@@ -5,6 +5,7 @@ pragma solidity ^0.8.24;
 import {IDataProvider} from "./interfaces/IDataProvider.sol";
 import {MADT} from "./MADT.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import {console} from "forge-std/console.sol";
 
 contract Vault {
     error Vault__InvalidAmount();
@@ -37,7 +38,6 @@ contract Vault {
     function depositCollateral(uint256 amountInUsd) public payable returns (bool) {
         uint256 madValue = dataProvider.getMADValueInUSD();
         uint256 madAmount = (amountInUsd * 1e18) / madValue;
-
         bool success = usdt.transferFrom(msg.sender, address(this), amountInUsd * (10 ** 6));
         if (!success) revert Vault__TransferFailed();
 

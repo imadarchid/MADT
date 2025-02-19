@@ -10,6 +10,8 @@ out/
 # Docs
 docs/
 
+don-reports/
+
 # Node modules
 **/node_modules/
 # Dotenv file
