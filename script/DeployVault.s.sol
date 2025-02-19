@@ -22,7 +22,7 @@ contract DeployVault is Script, HelperConfig {
         dataProvider = IDataProvider(contractAddress);
         IERC20 usdt = IERC20(getNetworkConfig().usdToken);
         Vault vault = new Vault(dataProvider, madt, usdt);
-        // madt.setVault(address(vault));
+        madt.setVault(address(vault));
         vm.stopBroadcast();
     }
 }
