@@ -10,25 +10,30 @@ import {DevOpsTools} from "lib/foundry-devops/src/DevOpsTools.sol";
 
 contract Interactions is Script, HelperConfig {
     IDataProvider public dataProvider;
-    address public consumer;
+    address contractAddress = DevOpsTools.get_most_recent_deployment("DataProvider", block.chainid);
 
-    function run() public {
+    function getLastResponse() public returns (uint256) {
         vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
-        address contractAddress = DevOpsTools.get_most_recent_deployment(
-            "DataProvider",
-            block.chainid
-        );
         dataProvider = IDataProvider(contractAddress);
-        // sendRequest();
-        console.log(bytesToUint(getLastResponse()));
+        bytes memory response = dataProvider.getLastResponse();
+        return abi.decode(response, (uint256));
         vm.stopBroadcast();
     }
 
-    function getLastResponse() public view returns (bytes memory) {
-        return dataProvider.getLastResponse();
+    function sendRequest() public {
+        vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
+        dataProvider = IDataProvider(contractAddress);
+        // Source code for the DON
+        string memory source = vm.readFile("./don-simulator/src/source/source.js");
+        dataProvider.sendRequest(1, source);
+        vm.stopBroadcast();
     }
 
-    function sendRequest() public {
-        dataProvider.sendRequest(1);
+    function getLastError() public returns (bytes memory) {
+        vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
+        dataProvider = IDataProvider(contractAddress);
+        bytes memory lastError = dataProvider.getLastError();
+        return lastError;
+        vm.stopBroadcast();
     }
 }

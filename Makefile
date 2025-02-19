@@ -33,6 +33,38 @@ simulate-don:
 	printf "%s\n" "Launching local don simulator..." && \
 	npx tsx ./don-simulator/src/localFunctionsTestnet.ts
 
+setup-functions:
+	forge script script/FunctionsScript.s.sol:FunctionsScript --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast
+
+# Interactions with the DON via the DataProvider contract
+send-request:
+	forge script script/Interactions.s.sol:Interactions --sig "sendRequest()" --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast -vvvvv
+
+get-last-response:
+	forge script script/Interactions.s.sol:Interactions --sig "getLastResponse()" --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast -vvvvv
+
+get-last-error:
+	cast call $(CONTRACT_ADDRESS) "getLastError()" --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY)
+
+get-last-request-id:
+	cast call $(CONTRACT_ADDRESS) "getLastRequestId()" --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY)
+
+# Deploy the MADT and Vault contract
+deploy-madt:
+	forge script script/DeployMADT.s.sol:DeployMADT --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast
+
+deploy-vault:
+	forge script script/DeployVault.s.sol:DeployVault --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast -vvvvv
+
+# Interactions with the Vault contract
+# Deposit collateral
+deposit-collateral:
+	forge script script/VaultInteractions.s.sol:VaultInteractions --sig "depositCollateral()" --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast -vvvvv
+
+# Redeem collateral
+redeem-collateral:
+	forge script script/VaultInteractions.s.sol:VaultInteractions --sig "redeemCollateral(uint256)" --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast -vvvvv
+
 NETWORK_ARGS := --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast
 
 ifeq ($(findstring --network sepolia,$(ARGS)),--network sepolia)

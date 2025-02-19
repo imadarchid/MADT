@@ -4,3 +4,4 @@ export * from "./localFunctionsTestnet";
 export * from "./types";
 export * from "./buildRequestCBOR";
 export * from "./simulationConfig";
+export * from "./setSource";
