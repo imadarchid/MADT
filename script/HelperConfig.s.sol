@@ -12,8 +12,7 @@ contract HelperConfig is Script {
     // Otherwise, we fetch the existing address from the live network
 
     uint256 public constant ETH_SEPOLIA_CHAIN_ID = 11155111;
-    address public usdtAddress =
-        DevOpsTools.get_most_recent_deployment("MockUSDT", block.chainid);
+    address public usdtAddress = DevOpsTools.get_most_recent_deployment("MockUSDT", block.chainid);
 
     struct NetworkConfig {
         address linkToken;
@@ -35,11 +34,7 @@ contract HelperConfig is Script {
         }
     }
 
-    function getSepoliaEthConfig()
-        public
-        pure
-        returns (NetworkConfig memory sepoliaConfig)
-    {
+    function getSepoliaEthConfig() public pure returns (NetworkConfig memory sepoliaConfig) {
         sepoliaConfig = NetworkConfig({
             linkToken: 0x779877A7B0D9E8603169DdbD7836e478b4624789,
             usdToken: 0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419,
@@ -52,10 +47,7 @@ contract HelperConfig is Script {
         return sepoliaConfig;
     }
 
-    function getAnvilEthConfig()
-        public
-        returns (NetworkConfig memory anvilConfig)
-    {
+    function getAnvilEthConfig() public returns (NetworkConfig memory anvilConfig) {
         anvilConfig = NetworkConfig({
             linkToken: vm.envAddress("LINK_TOKEN_ADDRESS"),
             usdToken: usdtAddress,
@@ -73,9 +65,7 @@ contract HelperConfig is Script {
         return activeNetworkConfig;
     }
 
-    function stringToBytes32(
-        string memory source
-    ) public pure returns (bytes32 result) {
+    function stringToBytes32(string memory source) public pure returns (bytes32 result) {
         bytes memory tempEmptyStringTest = bytes(source);
         if (tempEmptyStringTest.length == 0) {
             return 0x0;

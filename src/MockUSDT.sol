@@ -9,7 +9,7 @@ contract MockUSDT is ERC20 {
     uint256 private constant INITIAL_SUPPLY = 1000e18;
 
     constructor() ERC20("Mock USDT", "USDT") {
-        _mint(msg.sender, 100000000000000000000);
+        _mint(msg.sender, 100000000000);
     }
 
     function decimals() public pure override returns (uint8) {

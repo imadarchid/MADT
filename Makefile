@@ -36,6 +36,13 @@ simulate-don:
 setup-functions:
 	forge script script/FunctionsScript.s.sol:FunctionsScript --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast
 
+deploy-all:
+	make deploy-madt && \
+	make deploy-usdt && \
+	make setup-functions && \
+	make send-request && \
+	make deploy-vault
+
 # Interactions with the DON via the DataProvider contract
 send-request:
 	forge script script/Interactions.s.sol:Interactions --sig "sendRequest()" --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast -vv
