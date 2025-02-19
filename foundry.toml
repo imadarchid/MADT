@@ -5,6 +5,7 @@ fs_permissions = [
     { access = "read", path = "./broadcast" },
     { access = "read", path = "./reports" },
     { access = "read-write", path = "don-reports" },
+    { access = "read-write", path = "don-simulator" },
 ]
 
 src = "src"
