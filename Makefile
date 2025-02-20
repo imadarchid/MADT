@@ -77,7 +77,7 @@ redeem-collateral:
 
 # Rebase
 rebase:
-	forge script script/VaultInteractions.s.sol:VaultInteractions --sig "rebase()" --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast -vv
+	forge script script/VaultInteractions.s.sol:VaultInteractions --sig "rebase()" --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast -vvvvvv
 
 NETWORK_ARGS := --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast
 
