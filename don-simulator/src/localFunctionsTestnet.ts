@@ -31,6 +31,7 @@ import type {
   FunctionsContracts,
   RequestEventData,
 } from "./types";
+import path from "path";
 
 export const startLocalFunctionsTestnet = async (
   coordinatorAddress?: string,
@@ -38,6 +39,23 @@ export const startLocalFunctionsTestnet = async (
   port = 8545
 ): Promise<LocalFunctionsTestnet> => {
   const provider = new providers.JsonRpcProvider(`http://localhost:${port}`);
+
+  // Add error handler for provider disconnection
+  provider.on("error", async (error) => {
+    console.log("Provider error detected, shutting down testnet...");
+    // Clean up event listeners and close connections
+    await close();
+    process.exit(1);
+  });
+
+  // Add network change handler
+  provider.on("network", async (newNetwork, oldNetwork) => {
+    if (oldNetwork) {
+      console.log("Network connection lost, shutting down testnet...");
+      await close();
+      process.exit(1);
+    }
+  });
 
   const admin = new Wallet(
     "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80",
@@ -100,9 +118,14 @@ export const startLocalFunctionsTestnet = async (
   const getFunds: GetFunds = async () => {};
 
   const close = async (): Promise<void> => {
+    // Remove all event listeners
     contracts.functionsMockCoordinatorContract.removeAllListeners(
       "OracleRequest"
     );
+    provider.removeAllListeners();
+
+    // Optional: Add any additional cleanup needed
+    console.log("Local Functions testnet shut down successfully");
   };
 
   return {
@@ -494,8 +517,15 @@ if (require.main === module) {
     try {
       const args = process.argv.slice(2);
       const coordinatorAddress = args[0];
+      const configPath = path.join(
+        process.cwd(),
+        "don-simulator/src/config.js"
+      );
       console.log("Starting local Functions testnet...");
-      const testnet = await startLocalFunctionsTestnet(coordinatorAddress);
+      const testnet = await startLocalFunctionsTestnet(
+        coordinatorAddress,
+        configPath
+      );
       console.log("Local Functions testnet started successfully");
 
       // Keep the process running

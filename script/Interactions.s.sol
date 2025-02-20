@@ -15,9 +15,9 @@ contract Interactions is Script, HelperConfig {
     function getLastResponse() public returns (uint256) {
         vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
         dataProvider = IDataProvider(contractAddress);
-        bytes memory response = dataProvider.getLastResponse();
-        return abi.decode(response, (uint256));
+        uint256 madValue = dataProvider.getMADValueInUSD();
         vm.stopBroadcast();
+        return madValue;
     }
 
     function sendRequest() public {

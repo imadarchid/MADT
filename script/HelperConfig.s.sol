@@ -5,12 +5,14 @@ import {Script} from "forge-std/Script.sol";
 import {console} from "forge-std/console.sol";
 
 import {MockUSDT} from "../src/MockUSDT.sol";
+import {DevOpsTools} from "lib/foundry-devops/src/DevOpsTools.sol";
 
 contract HelperConfig is Script {
     // If we are on a local chain, we deploy the mock contract
     // Otherwise, we fetch the existing address from the live network
 
     uint256 public constant ETH_SEPOLIA_CHAIN_ID = 11155111;
+    address public usdtAddress = DevOpsTools.get_most_recent_deployment("MockUSDT", block.chainid);
 
     struct NetworkConfig {
         address linkToken;
@@ -46,11 +48,9 @@ contract HelperConfig is Script {
     }
 
     function getAnvilEthConfig() public returns (NetworkConfig memory anvilConfig) {
-        MockUSDT usdt = new MockUSDT();
-
         anvilConfig = NetworkConfig({
             linkToken: vm.envAddress("LINK_TOKEN_ADDRESS"),
-            usdToken: address(usdt),
+            usdToken: usdtAddress,
             subscriptionId: 1,
             donId: stringToBytes32(vm.envString("DON_ID")),
             router: vm.envAddress("FUNCTIONS_ROUTER_ADDRESS"),

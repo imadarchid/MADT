@@ -36,15 +36,22 @@ simulate-don:
 setup-functions:
 	forge script script/FunctionsScript.s.sol:FunctionsScript --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast
 
+deploy-all:
+	make deploy-madt && \
+	make deploy-usdt && \
+	make setup-functions && \
+	make deploy-vault && \
+	make send-request
+
 # Interactions with the DON via the DataProvider contract
 send-request:
-	forge script script/Interactions.s.sol:Interactions --sig "sendRequest()" --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast -vvvvv
+	forge script script/Interactions.s.sol:Interactions --sig "sendRequest()" --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast -vv
 
 get-last-response:
-	forge script script/Interactions.s.sol:Interactions --sig "getLastResponse()" --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast -vvvvv
+	forge script script/Interactions.s.sol:Interactions --sig "getLastResponse()" --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast -vv
 
 get-last-error:
-	cast call $(CONTRACT_ADDRESS) "getLastError()" --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY)
+	forge script script/Interactions.s.sol:Interactions --sig "getLastError()" --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast -vv
 
 get-last-request-id:
 	cast call $(CONTRACT_ADDRESS) "getLastRequestId()" --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY)
@@ -53,17 +60,24 @@ get-last-request-id:
 deploy-madt:
 	forge script script/DeployMADT.s.sol:DeployMADT --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast
 
+deploy-usdt:
+	forge script script/DeployMockUSDT.s.sol:DeployMockUSDT --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast
+
 deploy-vault:
-	forge script script/DeployVault.s.sol:DeployVault --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast -vvvvv
+	forge script script/DeployVault.s.sol:DeployVault --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast -vv
 
 # Interactions with the Vault contract
 # Deposit collateral
 deposit-collateral:
-	forge script script/VaultInteractions.s.sol:VaultInteractions --sig "depositCollateral()" --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast -vvvvv
+	forge script script/VaultInteractions.s.sol:VaultInteractions --sig "depositCollateral()" --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast -vv
 
 # Redeem collateral
 redeem-collateral:
-	forge script script/VaultInteractions.s.sol:VaultInteractions --sig "redeemCollateral(uint256)" --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast -vvvvv
+	forge script script/VaultInteractions.s.sol:VaultInteractions --sig "redeemCollateral(uint256)" $(AMOUNT) --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast -vv
+
+# Rebase
+rebase:
+	forge script script/VaultInteractions.s.sol:VaultInteractions --sig "rebase()" --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast -vv
 
 NETWORK_ARGS := --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast
 

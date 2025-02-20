@@ -37,7 +37,7 @@ contract Vault {
 
     function depositCollateral(uint256 amountInUsd) public payable returns (bool) {
         uint256 madValue = dataProvider.getMADValueInUSD();
-        uint256 madAmount = (amountInUsd * 1e18) / madValue;
+        uint256 madAmount = (amountInUsd * (10 ** 8)) / madValue;
         bool success = usdt.transferFrom(msg.sender, address(this), amountInUsd * (10 ** 6));
         if (!success) revert Vault__TransferFailed();
 
@@ -56,22 +56,27 @@ contract Vault {
 
     function redeemCollateral(uint256 amountInUsd) public payable returns (bool) {
         uint256 madValue = dataProvider.getMADValueInUSD();
-        uint256 madAmount = (amountInUsd * 1e18) / madValue;
+        uint256 madAmount = (amountInUsd * (10 ** 8)) / madValue;
 
         if (madt.balanceOf(msg.sender) < madAmount) {
             revert Vault__UserInsufficientBalance();
         }
 
-        if (usdt.balanceOf(address(this)) < amountInUsd * 1e6) {
+        if (usdt.balanceOf(address(this)) < amountInUsd * (10 ** 6)) {
             revert Vault__VaultInsufficientBalance();
         }
 
         madt.burn(msg.sender, madAmount);
 
-        bool success = usdt.transfer(msg.sender, amountInUsd * 1e6);
+        bool success = usdt.transfer(msg.sender, amountInUsd * (10 ** 6));
         if (!success) revert Vault__TransferFailed();
 
         emit CollateralRedeemed(msg.sender, amountInUsd);
         return success;
+    }
+
+    function rebase() public {
+        uint256 madValue = dataProvider.getMADValueInUSD();
+        madt.rebase(madValue);
     }
 }
