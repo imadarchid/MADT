@@ -36,19 +36,12 @@ contract MADT is ERC20, Ownable {
         return (super.balanceOf(account) * rebaseFactor) / 1e18;
     }
 
-    function transfer(
-        address to,
-        uint256 amount
-    ) public override returns (bool) {
+    function transfer(address to, uint256 amount) public override returns (bool) {
         uint256 scaledAmount = (amount * 1e18) / rebaseFactor;
         return super.transfer(to, scaledAmount);
     }
 
-    function transferFrom(
-        address from,
-        address to,
-        uint256 amount
-    ) public override returns (bool) {
+    function transferFrom(address from, address to, uint256 amount) public override returns (bool) {
         uint256 scaledAmount = (amount * 1e18) / rebaseFactor;
         return super.transferFrom(from, to, scaledAmount);
     }

@@ -35,16 +35,10 @@ contract Vault {
         @return bool True if the collateral was deposited successfully
     */
 
-    function depositCollateral(
-        uint256 amountInUsd
-    ) public payable returns (bool) {
+    function depositCollateral(uint256 amountInUsd) public payable returns (bool) {
         uint256 madValue = dataProvider.getMADValueInUSD();
         uint256 madAmount = (amountInUsd * (10 ** 8)) / madValue;
-        bool success = usdt.transferFrom(
-            msg.sender,
-            address(this),
-            amountInUsd * (10 ** 6)
-        );
+        bool success = usdt.transferFrom(msg.sender, address(this), amountInUsd * (10 ** 6));
         if (!success) revert Vault__TransferFailed();
 
         emit CollateralDeposited(msg.sender, amountInUsd * (10 ** 6));
@@ -60,9 +54,7 @@ contract Vault {
         @return bool True if the collateral was redeemed successfully
     */
 
-    function redeemCollateral(
-        uint256 amountInUsd
-    ) public payable returns (bool) {
+    function redeemCollateral(uint256 amountInUsd) public payable returns (bool) {
         uint256 madValue = dataProvider.getMADValueInUSD();
         uint256 madAmount = (amountInUsd * (10 ** 8)) / madValue;
 
