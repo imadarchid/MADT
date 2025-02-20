@@ -40,8 +40,8 @@ deploy-all:
 	make deploy-madt && \
 	make deploy-usdt && \
 	make setup-functions && \
-	make send-request && \
-	make deploy-vault
+	make deploy-vault && \
+	make send-request
 
 # Interactions with the DON via the DataProvider contract
 send-request:
@@ -74,6 +74,10 @@ deposit-collateral:
 # Redeem collateral
 redeem-collateral:
 	forge script script/VaultInteractions.s.sol:VaultInteractions --sig "redeemCollateral(uint256)" $(AMOUNT) --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast -vv
+
+# Rebase
+rebase:
+	forge script script/VaultInteractions.s.sol:VaultInteractions --sig "rebase()" --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast -vv
 
 NETWORK_ARGS := --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast
 

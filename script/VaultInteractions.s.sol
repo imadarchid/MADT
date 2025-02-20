@@ -28,4 +28,10 @@ contract VaultInteractions is Script, HelperConfig {
         vault.redeemCollateral(amountInUsd);
         vm.stopBroadcast();
     }
+
+    function rebase() public {
+        vm.startBroadcast();
+        vault.rebase();
+        vm.stopBroadcast();
+    }
 }

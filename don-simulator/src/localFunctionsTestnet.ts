@@ -40,6 +40,23 @@ export const startLocalFunctionsTestnet = async (
 ): Promise<LocalFunctionsTestnet> => {
   const provider = new providers.JsonRpcProvider(`http://localhost:${port}`);
 
+  // Add error handler for provider disconnection
+  provider.on("error", async (error) => {
+    console.log("Provider error detected, shutting down testnet...");
+    // Clean up event listeners and close connections
+    await close();
+    process.exit(1);
+  });
+
+  // Add network change handler
+  provider.on("network", async (newNetwork, oldNetwork) => {
+    if (oldNetwork) {
+      console.log("Network connection lost, shutting down testnet...");
+      await close();
+      process.exit(1);
+    }
+  });
+
   const admin = new Wallet(
     "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80",
     provider
@@ -101,9 +118,14 @@ export const startLocalFunctionsTestnet = async (
   const getFunds: GetFunds = async () => {};
 
   const close = async (): Promise<void> => {
+    // Remove all event listeners
     contracts.functionsMockCoordinatorContract.removeAllListeners(
       "OracleRequest"
     );
+    provider.removeAllListeners();
+
+    // Optional: Add any additional cleanup needed
+    console.log("Local Functions testnet shut down successfully");
   };
 
   return {
