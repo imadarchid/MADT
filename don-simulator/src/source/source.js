@@ -47,5 +47,5 @@
 // const medianRate = prices.sort((a, b) => a - b)[Math.round(prices.length / 2)];
 // console.log(`Median MAD rate: $${medianRate.toFixed(2)}`);
 
-// return Functions.encodeUint256(Math.round(medianRate * 100));
-return Functions.encodeUint256(11);
+// return Functions.encodeUint256(Math.round(medianRate));
+return Functions.encodeUint256(13);
