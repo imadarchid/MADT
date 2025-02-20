@@ -51,7 +51,7 @@ get-last-response:
 	forge script script/Interactions.s.sol:Interactions --sig "getLastResponse()" --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast -vv
 
 get-last-error:
-	cast call $(CONTRACT_ADDRESS) "getLastError()" --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY)
+	forge script script/Interactions.s.sol:Interactions --sig "getLastError()" --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY) --broadcast -vv
 
 get-last-request-id:
 	cast call $(CONTRACT_ADDRESS) "getLastRequestId()" --rpc-url http://localhost:8545 --private-key $(DEFAULT_ANVIL_KEY)

@@ -495,7 +495,10 @@ if (require.main === module) {
     try {
       const args = process.argv.slice(2);
       const coordinatorAddress = args[0];
-      const configPath = path.join(process.cwd(), "don-simulator/src/config.js");
+      const configPath = path.join(
+        process.cwd(),
+        "don-simulator/src/config.js"
+      );
       console.log("Starting local Functions testnet...");
       const testnet = await startLocalFunctionsTestnet(
         coordinatorAddress,

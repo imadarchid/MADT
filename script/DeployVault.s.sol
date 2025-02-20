@@ -11,15 +11,15 @@ import {IERC20} from "openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
 import {DevOpsTools} from "lib/foundry-devops/src/DevOpsTools.sol";
 
 contract DeployVault is Script, HelperConfig {
-    IDataProvider public dataProvider;
-    address contractAddress = DevOpsTools.get_most_recent_deployment("DataProvider", block.chainid);
-    address MADTAddress = DevOpsTools.get_most_recent_deployment("MADT", block.chainid);
-
-    MADT public madt = MADT(MADTAddress);
-
     function run() public {
+        address contractAddress = DevOpsTools.get_most_recent_deployment("DataProvider", block.chainid);
+        address MADTAddress = DevOpsTools.get_most_recent_deployment("MADT", block.chainid);
+
+        MADT madt = MADT(MADTAddress);
+
         vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
-        dataProvider = IDataProvider(contractAddress);
+        console.log("Deploying Vault..");
+        IDataProvider dataProvider = IDataProvider(contractAddress);
         IERC20 usdt = IERC20(getNetworkConfig().usdToken);
         Vault vault = new Vault(dataProvider, madt, usdt);
         madt.setVault(address(vault));

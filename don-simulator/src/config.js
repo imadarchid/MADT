@@ -23,11 +23,14 @@ const requestConfig = {
   // Location of source code (only Inline is currently supported)
   codeLocation: Location.Inline,
   // Optional. Secrets can be accessed within the source code with `secrets.varName` (ie: secrets.apiKey). The secrets object can only contain string values.
-  secrets: { apiKey: process.env.RANDOM_ENV ?? "salam2" },
+  secrets: {
+    exchangeRateApiKey: process.env.EXCH_RATE_KEY ?? "",
+    currencyApiKey: process.env.CURRENCY_KEY ?? "",
+  },
   // Code language (only JavaScript is currently supported)
   codeLanguage: CodeLanguage.JavaScript,
   // Expected type of the returned value
-  expectedReturnType: ReturnType.string,
+  expectedReturnType: ReturnType.uint256,
 };
 
 module.exports = requestConfig;
